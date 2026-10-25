@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body class="popup">
+    <header>
+      <img src="icons/icon32.png" alt="" width="24" height="24" />
+      <b>Family Safe Player</b>
+      <label class="switch" title="Turn filtering on or off everywhere">
+        <input type="checkbox" id="enabled" checked />
+        <span></span>
+      </label>
+    </header>
+    <section id="status">Looking for a video…</section>
+    <section id="current" hidden>
+      <div class="title" id="title"></div>
+      <div class="muted" id="count"></div>
+      <div class="row">
+        <button id="import" class="primary">Load skip file for this title</button>
+      </div>
+      <div class="row">
+        <button id="export">Export</button>
+        <button id="clear" class="danger">Clear</button>
+      </div>
+    </section>
+    <section class="help">
+      <b>Mark scenes while you watch</b>
+      <p>Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> at the start of a scene and again at the end. Next time it is skipped automatically.</p>
+      <p>Have the film as a file? <a href="https://phanisrikanth9.github.io/family-safe-player/" target="_blank">Scan it automatically</a> and load the skip file here.</p>
+    </section>
+    <footer><a href="options.html" target="_blank">All saved titles</a></footer>
+    <script src="shared.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

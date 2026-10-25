@@ -1,0 +1,13 @@
+{
+  "format": "family-safe-skips",
+  "version": 1,
+  "title": "Demo clip",
+  "duration": 50,
+  "createdAt": "2026-10-25T00:00:00.000Z",
+  "createdWith": "Family Safe Player (web)",
+  "segments": [
+    { "start": 12, "end": 18, "category": "custom", "action": "skip", "note": "Demo: skipped scene" },
+    { "start": 22, "end": 25, "category": "language", "action": "mute", "note": "Demo: muted line" },
+    { "start": 32, "end": 38, "category": "custom", "action": "blackout", "note": "Demo: blacked out scene" }
+  ]
+}

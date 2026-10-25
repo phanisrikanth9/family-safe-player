@@ -1,0 +1,23 @@
+video.fsp-black {
+  filter: brightness(0) !important;
+}
+.fsp-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  font: 600 14px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #ecebe6;
+  background: rgba(17, 22, 34, 0.92);
+  border: 1px solid #f2b45a;
+  border-radius: 999px;
+  padding: 8px 16px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.18s, transform 0.18s;
+  pointer-events: none;
+}
+.fsp-toast.show {
+  opacity: 1;
+  transform: none;
+}
