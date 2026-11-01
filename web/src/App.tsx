@@ -356,6 +356,7 @@ export default function App() {
             GitHub
           </a>
         </nav>
+        <LightsSwitch />
       </header>
 
       {!url ? (
@@ -731,6 +732,32 @@ function FilePick({ accept, label, onFile }: { accept: string; label: string; on
       />
       {label}
     </label>
+  )
+}
+
+/** House lights: 'down' is the dark cinema theme, 'up' the daytime one. */
+function LightsSwitch() {
+  const [lights, setLights] = useState<'down' | 'up'>(() => (document.documentElement.dataset.theme === 'up' ? 'up' : 'down'))
+  const flip = () => {
+    const next = lights === 'down' ? 'up' : 'down'
+    const apply = () => {
+      document.documentElement.dataset.theme = next
+      try {
+        localStorage.setItem('fsp-lights', next)
+      } catch {
+        /* private browsing */
+      }
+      setLights(next)
+    }
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => void }
+    if (doc.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) doc.startViewTransition(apply)
+    else apply()
+  }
+  return (
+    <button type="button" className={`lights ${lights}`} onClick={flip} aria-pressed={lights === 'up'}>
+      <span className="bulb" aria-hidden />
+      {lights === 'down' ? 'Lights up' : 'Lights down'}
+    </button>
   )
 }
 

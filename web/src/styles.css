@@ -34,6 +34,31 @@
   color-scheme: dark;
 }
 
+/* Lights up: the same room on a weekend afternoon. Same roles, daylight values. */
+[data-theme='up'] {
+  --night: #eeeaf5;
+  --night-2: #f8f6fc;
+  --night-3: #e3dcef;
+  --line: #d4cae6;
+  --line-hi: #b6a8d1;
+  --text: #1c1430;
+  --text-2: #463a5e;
+  --muted: #6e6388;
+  --beam: #7c3f0c;
+  --lamp: #e07b22;
+  --lamp-ink: #2a1500;
+  --rose: #d6365f;
+  --sky: #2c69cc;
+  --mint: #12936a;
+  --violet: #6a4cd4;
+  --danger: #c93636;
+  --strip-base: #c8bce0;
+  --strip-hot: #d6365f;
+  color-scheme: light;
+}
+[data-theme='up'] body::after { opacity: 0.025; }
+[data-theme='up'] .panel { box-shadow: 0 24px 60px -40px rgba(60, 40, 110, 0.35); }
+
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
@@ -191,7 +216,7 @@ input, select { background: var(--night); border: 1px solid var(--line); border-
 .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 .dot.flag { background: var(--rose); box-shadow: 0 0 10px var(--rose); }
 .strip-toast {
-  color: var(--text); background: rgba(26, 20, 40, 0.92); border: 1px solid var(--line-hi);
+  color: var(--text); background: color-mix(in srgb, var(--night-2) 92%, transparent); border: 1px solid var(--line-hi);
   padding: 7px 16px; border-radius: 999px; font-weight: 600; font-size: 14px;
   animation: toast 2.4s var(--ease) both;
 }
@@ -223,9 +248,9 @@ input, select { background: var(--night); border: 1px solid var(--line); border-
   transition: box-shadow 0.9s ease;
 }
 .player-frame video { width: 100%; height: 100%; display: block; background: #000; transition: filter 0.08s; }
-.player-lock { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; background: radial-gradient(70% 70% at 50% 40%, rgba(40, 30, 64, 0.85), rgba(10, 8, 18, 0.95)); backdrop-filter: blur(24px); }
+.player-lock { color: #f4edf7; position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; background: radial-gradient(70% 70% at 50% 40%, rgba(40, 30, 64, 0.85), rgba(10, 8, 18, 0.95)); backdrop-filter: blur(24px); }
 .player-lock p { max-width: 380px; color: var(--text-2); margin: 0; font-size: 15.5px; }
-.player-toast { position: absolute; top: 16px; right: 16px; background: rgba(18, 14, 31, 0.9); border: 1px solid var(--line-hi); border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 600; animation: pop 0.22s var(--ease); }
+.player-toast { color: #f4edf7; position: absolute; top: 16px; right: 16px; background: rgba(18, 14, 31, 0.9); border: 1px solid var(--line-hi); border-radius: 999px; padding: 7px 16px; font-size: 14px; font-weight: 600; animation: pop 0.22s var(--ease); }
 @keyframes pop { from { opacity: 0; transform: translateY(-8px) scale(0.97); } }
 .player-bar { display: flex; align-items: center; gap: 12px; padding: 10px 2px 0; }
 .warn-chip { font-size: 12.5px; color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); padding: 2px 10px; border-radius: 999px; }
@@ -262,7 +287,7 @@ input, select { background: var(--night); border: 1px solid var(--line); border-
 
 /* ---------- side panel ---------- */
 .panel {
-  background: linear-gradient(180deg, rgba(34, 27, 53, 0.82), rgba(25, 20, 40, 0.92));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--night-3) 82%, transparent), color-mix(in srgb, var(--night-2) 92%, transparent));
   border: 1px solid var(--line); border-radius: 20px; position: sticky; top: 88px; max-height: calc(100vh - 110px);
   display: flex; flex-direction: column; overflow: hidden; backdrop-filter: blur(10px);
   box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.8);
@@ -292,7 +317,7 @@ input, select { background: var(--night); border: 1px solid var(--line); border-
 
 /* ---------- scene list ---------- */
 .seg-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.seg { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 14px; background: rgba(12, 9, 22, 0.6); transition: border-color 0.2s, opacity 0.2s; }
+.seg { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 11px; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--night) 60%, transparent); transition: border-color 0.2s, opacity 0.2s; }
 .seg:hover { border-color: var(--line-hi); }
 .seg.off { opacity: 0.5; }
 .seg-thumb { width: 96px; }
@@ -350,3 +375,35 @@ input, select { background: var(--night); border: 1px solid var(--line); border-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- house lights switch ---------- */
+.top { gap: 26px; }
+.lights {
+  display: inline-flex; align-items: center; gap: 9px; flex: none;
+  background: var(--night-2); border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 14px 7px 10px; font-size: 13.5px; color: var(--text-2); cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.lights:hover { border-color: var(--line-hi); color: var(--text); }
+.bulb {
+  width: 14px; height: 14px; border-radius: 50%; background: var(--muted);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+.lights.up .bulb { background: var(--lamp); box-shadow: 0 0 0 4px color-mix(in srgb, var(--lamp) 25%, transparent), 0 0 18px var(--lamp); }
+
+/* ---------- the room dims while the film plays ---------- */
+.top, .panel, .stage-title, .stage-tools, .timeline, .player-bar, .notice, .error, .how, .foot {
+  transition: opacity 1.4s var(--ease), filter 1.4s var(--ease);
+}
+.film-playing body { background: color-mix(in srgb, var(--night) 55%, #000); transition: background 1.4s var(--ease); }
+.film-playing :is(.top, .panel, .stage-title, .stage-tools, .timeline, .player-bar, .notice, .error, .how, .foot) {
+  opacity: 0.14; filter: saturate(0.4);
+}
+/* Reaching for the controls brings the lights back up where you point. */
+.film-playing :is(.top, .panel, .stage-title, .stage-tools, .timeline, .player-bar):hover,
+.film-playing :is(.top, .panel, .stage-title, .stage-tools, .timeline, .player-bar):focus-within {
+  opacity: 1; filter: none; transition-duration: 0.25s;
+}
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.5s; }
+.top nav { margin-left: auto; }
+@media (max-width: 760px) { .lights { margin-left: auto; } }

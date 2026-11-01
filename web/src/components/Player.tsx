@@ -154,6 +154,32 @@ export const Player = forwardRef<PlayerHandle, Props>(function Player(
     return () => window.clearInterval(id)
   }, [url])
 
+  // House lights dim while the film plays and come back up on pause, like a cinema.
+  useEffect(() => {
+    const v = video.current
+    if (!v) return
+    const root = document.documentElement
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const down = () => {
+      clearTimeout(timer)
+      // A short delay so scrubbing or "Check the cut" doesn't flicker the room.
+      timer = setTimeout(() => root.classList.add('film-playing'), 700)
+    }
+    const up = () => {
+      clearTimeout(timer)
+      root.classList.remove('film-playing')
+    }
+    v.addEventListener('playing', down)
+    v.addEventListener('pause', up)
+    v.addEventListener('ended', up)
+    return () => {
+      up()
+      v.removeEventListener('playing', down)
+      v.removeEventListener('pause', up)
+      v.removeEventListener('ended', up)
+    }
+  }, [url])
+
   const active = segments.filter((s) => s.enabled).length
 
   return (
