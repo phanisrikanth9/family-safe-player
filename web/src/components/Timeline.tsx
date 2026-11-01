@@ -78,7 +78,7 @@ export function Timeline({ duration, frames, segments, suggestiveWeight, current
           <div
             key={s.id}
             className={`timeline-seg ${s.enabled ? '' : 'off'} ${s.action}`}
-            style={{ left: pct(s.start), width: `max(3px, ${pct(s.end - s.start)})`, background: COLORS[s.category] }}
+            style={{ left: pct(s.start), width: `max(3px, ${pct(s.end - s.start)})`, color: COLORS[s.category] }}
             title={`${formatTime(s.start)}–${formatTime(s.end)} · ${s.category}`}
           />
         ))}

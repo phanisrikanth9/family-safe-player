@@ -125,11 +125,40 @@ export const Player = forwardRef<PlayerHandle, Props>(function Player(
     if (locked) video.current?.pause()
   }, [locked])
 
+  // Ambient light: average the picture every half second and let it spill around the screen.
+  const frame = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const v = video.current
+    const el = frame.current
+    if (!v || !el) return
+    const c = document.createElement('canvas')
+    c.width = c.height = 8
+    const ctx = c.getContext('2d', { willReadFrequently: true })
+    const id = window.setInterval(() => {
+      if (!ctx || v.paused || v.readyState < 2) return
+      try {
+        ctx.drawImage(v, 0, 0, 8, 8)
+        const d = ctx.getImageData(0, 0, 8, 8).data
+        let r = 0, g = 0, b = 0
+        for (let i = 0; i < d.length; i += 4) {
+          r += d[i]
+          g += d[i + 1]
+          b += d[i + 2]
+        }
+        const n = d.length / 4
+        el.style.setProperty('--ambient', `rgb(${Math.round(r / n)} ${Math.round(g / n)} ${Math.round(b / n)})`)
+      } catch {
+        /* cross-origin or not decodable yet */
+      }
+    }, 500)
+    return () => window.clearInterval(id)
+  }, [url])
+
   const active = segments.filter((s) => s.enabled).length
 
   return (
     <div className="player">
-      <div className="player-frame">
+      <div className="player-frame" ref={frame}>
         <video
           ref={video}
           src={url}

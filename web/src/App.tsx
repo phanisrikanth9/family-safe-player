@@ -3,6 +3,7 @@ import type { ModelName } from 'nsfwjs'
 import { Player, type PlayerHandle } from './components/Player'
 import { Timeline } from './components/Timeline'
 import { SegmentList } from './components/SegmentList'
+import { Filmstrip } from './components/Filmstrip'
 import { Scanner, sampleTimes } from './lib/scanner'
 import {
   detectSegments,
@@ -572,53 +573,64 @@ function Landing({ onVideo, onDemo, error }: { onVideo: (f: File) => void; onDem
   const [drag, setDrag] = useState(false)
   return (
     <main className="landing">
-      <div className="hero">
-        <h1>
-          Watch the film together.
+      <div className="beam" aria-hidden />
+      <section className="hero">
+        <h1 className="marquee">
+          Family movie night,
           <br />
-          <em>Skip the scenes that make it awkward.</em>
+          minus the awkward minutes
         </h1>
         <p className="lead">
-          Open a movie file. An AI model scans it in your browser, finds nudity and sex scenes, and plays the film with
-          those parts skipped. Add the subtitles to mute swearing too.
+          Open a film and an AI model watches it first, right here in your browser. It finds the nudity and sex scenes,
+          then plays the movie with them skipped. Nothing is uploaded.
         </p>
-      </div>
-      <label
-        className={`drop ${drag ? 'drag' : ''}`}
-        onDragOver={(e) => {
-          e.preventDefault()
-          setDrag(true)
-        }}
-        onDragLeave={() => setDrag(false)}
-        onDrop={(e) => {
-          e.preventDefault()
-          setDrag(false)
-          const f = e.dataTransfer.files[0]
-          if (f) onVideo(f)
-        }}
-      >
-        <input type="file" accept="video/*,.mkv" onChange={(e) => e.target.files?.[0] && onVideo(e.target.files[0])} />
-        <strong>Drop a video here</strong>
-        <span>or click to choose · MP4 or WebM · stays on your device</span>
-      </label>
-      <button type="button" className="ghost" onClick={onDemo}>
-        No video handy? Try the demo clip
-      </button>
-      {error && <p className="error">{error}</p>}
-      <ul className="pillars">
-        <li>
-          <b>Private</b>
-          <span>Runs on your own GPU with TensorFlow.js. Nothing is uploaded.</span>
-        </li>
-        <li>
-          <b>You stay in control</b>
-          <span>Review every flagged scene, adjust the edges, or mark your own.</span>
-        </li>
-        <li>
-          <b>Works while streaming</b>
-          <span>Export a skip file and the browser extension applies it on Netflix and others.</span>
-        </li>
-      </ul>
+        <div className="hero-actions">
+          <label
+            className={`drop ${drag ? 'drag' : ''}`}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setDrag(true)
+            }}
+            onDragLeave={() => setDrag(false)}
+            onDrop={(e) => {
+              e.preventDefault()
+              setDrag(false)
+              const f = e.dataTransfer.files[0]
+              if (f) onVideo(f)
+            }}
+          >
+            <input type="file" accept="video/*,.mkv" onChange={(e) => e.target.files?.[0] && onVideo(e.target.files[0])} />
+            <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
+              <path d="M4 5h16v14H4z M4 9h16 M8 5v4 M12 5v4 M16 5v4" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            </svg>
+            <span>
+              <strong>Open a movie</strong>
+              <small>or drop an MP4 / WebM file here</small>
+            </span>
+          </label>
+          <button type="button" className="ghost-lg" onClick={onDemo}>
+            Watch the 50-second demo
+          </button>
+        </div>
+        {error && <p className="error">{error}</p>}
+      </section>
+
+      <Filmstrip />
+
+      <section className="claims" aria-label="What makes it different">
+        <p>
+          <b>Private by design.</b> The model runs on your own graphics card with TensorFlow.js. The film never leaves your
+          computer.
+        </p>
+        <p>
+          <b>You have the final say.</b> Every flagged scene is listed with a blurred preview. Keep it, trim its edges, or mark
+          one the model missed.
+        </p>
+        <p>
+          <b>Works on Netflix too.</b> The browser extension applies the same skip list on Netflix, Prime Video, Disney+ and
+          YouTube.
+        </p>
+      </section>
     </main>
   )
 }
